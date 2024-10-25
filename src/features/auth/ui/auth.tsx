@@ -11,9 +11,14 @@ import {
 } from "@/shared/ui/form";
 import { Card, CardHeader, CardTitle, CardContent } from "@/shared/ui/card";
 import { useValidate } from "../_model/use-validate";
+import { FormFields } from "../_domian";
 
 export function Auth() {
-  const { form, onSubmit } = useValidate();
+  const { form } = useValidate();
+
+  const onSubmit = async (values: FormFields) => {
+    console.log(values);
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-zinc-950 p-4 relative overflow-hidden">
