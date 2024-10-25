@@ -1,73 +1,79 @@
-import { useState } from "react";
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/shared/ui/card";
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/shared/ui/form";
+import { Card, CardHeader, CardTitle, CardContent } from "@/shared/ui/card";
+import { useValidate } from "../_model/use-validate";
 
 export function Auth() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-  }
+  const { form, onSubmit } = useValidate();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-900 p-4 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-zinc-950 p-4 relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden"></div>
       <div className="w-full max-w-md z-10">
-        <Card className="border-zinc-800 bg-zinc-950/50 backdrop-blur-sm">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold text-center text-zinc-100">
-              Login
-            </CardTitle>
+        <Card className="bg-inherit">
+          <CardHeader className="flex justify-center">
+            <CardTitle className="text-2xl text-zinc-50">Login</CardTitle>
           </CardHeader>
-          <CardContent className="grid gap-4">
-            <div className="grid gap-2 text-zinc-100">
-              Username
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="bg-zinc-800 border-zinc-700 text-zinc-100 placeholder-zinc-400"
-              />
-            </div>
-            <div className="grid gap-2 text-zinc-100">
-              Password
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="bg-zinc-800 border-zinc-700 text-zinc-100"
-              />
-            </div>
+          <CardContent>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-8"
+              >
+                <FormField
+                  control={form.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-zinc-50">Username</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter your username"
+                          className="text-zinc-50"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Choose a username that will help identify you
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-zinc-50">Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter your password"
+                          type="password"
+                          className="text-zinc-50"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Please use at least one letter and one number.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit">Submit</Button>
+              </form>
+            </Form>
           </CardContent>
-          <CardFooter>
-            <Button
-              className="w-full bg-zinc-700 hover:bg-zinc-600 text-zinc-100"
-              onClick={onSubmit}
-              disabled={isLoading}
-            >
-              {isLoading && <span>Load...</span>}
-              Sign In
-            </Button>
-          </CardFooter>
         </Card>
       </div>
     </div>
