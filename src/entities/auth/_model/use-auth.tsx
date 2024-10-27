@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { authApi } from "@/features/auth/api";
-import { FormFields } from "@/features/auth/_domian";
+import { authApi } from "../api/index.ts";
+import { FormFields } from "../_domian/index.ts";
 
 export function useAuth() {
   const queryClient = useQueryClient();

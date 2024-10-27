@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import { FormFields, TokenDto } from "../_domian";
-import ky from "ky";
+import ky, { Options } from "ky";
 
 const BASE_URL = "https://icherniakov.ru/yt-course/";
 
@@ -57,4 +57,36 @@ export const authApi = {
       console.log(error);
     }
   },
+  authKy: ky.create({
+    prefixUrl: BASE_URL,
+    hooks: {
+      beforeRequest: [
+        (request) => {
+          const accessToken = Cookies.get("access_token");
+          if (accessToken) {
+            request.headers.set("Authorization", `Bearer ${accessToken}`);
+          }
+        },
+      ],
+      afterResponse: [
+        async (request, options, response) => {
+          if (response.status === 401) {
+            try {
+              const newTokens = await authApi.refreshToken();
+              if (newTokens?.access_token) {
+                request.headers.set(
+                  "Authorization",
+                  `Bearer ${newTokens.access_token}`,
+                );
+                // Повторяем запрос с обновленным access токеном
+                return await ky(request as Options);
+              }
+            } catch (error) {
+              console.error("Failed to refresh token", error);
+            }
+          }
+        },
+      ],
+    },
+  }),
 };

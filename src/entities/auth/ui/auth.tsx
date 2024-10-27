@@ -13,19 +13,21 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/shared/ui/card";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuth } from "@/features/auth/_model/use-auth.tsx";
+import { useAuth } from "../_model/use-auth";
+
+const formSchema = z.object({
+  username: z
+    .string()
+    .min(2, { message: "Username must be at least 2 characters." }),
+  password: z
+    .string()
+    .min(2, { message: "Password must be at least 2 characters." }),
+});
+
+type FormData = z.infer<typeof formSchema>;
 
 export function Auth() {
   const { handleGetAuthToken, isLoadData, error, success } = useAuth();
-  console.log(isLoadData);
-  const formSchema = z.object({
-    username: z
-      .string()
-      .min(2, { message: "Username must be at least 2 characters." }),
-    password: z
-      .string()
-      .min(2, { message: "Password must be at least 2 characters." }),
-  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -35,7 +37,8 @@ export function Auth() {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = (data: FormData) => {
+    form.reset();
     handleGetAuthToken(data);
   };
 

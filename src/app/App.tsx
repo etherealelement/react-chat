@@ -1,4 +1,4 @@
-import { Auth } from "@/features/auth";
+import { Auth } from "@/entities/auth";
 
 function App() {
   return (
