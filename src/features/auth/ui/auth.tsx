@@ -10,14 +10,33 @@ import {
   FormMessage,
 } from "@/shared/ui/form";
 import { Card, CardHeader, CardTitle, CardContent } from "@/shared/ui/card";
-import { useValidate } from "../_model/use-validate";
-import { FormFields } from "../_domian";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from "@/features/auth/_model/use-auth.tsx";
 
 export function Auth() {
-  const { form } = useValidate();
+  const { handleGetAuthToken, isLoadData, error, success } = useAuth();
+  console.log(isLoadData);
+  const formSchema = z.object({
+    username: z
+      .string()
+      .min(2, { message: "Username must be at least 2 characters." }),
+    password: z
+      .string()
+      .min(2, { message: "Password must be at least 2 characters." }),
+  });
 
-  const onSubmit = async (values: FormFields) => {
-    console.log(values);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
+    handleGetAuthToken(data);
   };
 
   return (
@@ -75,7 +94,17 @@ export function Auth() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit">Submit</Button>
+                {error && (
+                  <FormMessage>{error.message}. Please try again</FormMessage>
+                )}
+                <Button
+                  type="submit"
+                  variant={error ? "destructive" : "default"}
+                  isSuccess={success}
+                  isLoading={isLoadData}
+                >
+                  Submit
+                </Button>
               </form>
             </Form>
           </CardContent>
