@@ -1,11 +1,9 @@
-import { Auth } from "@/entities/auth";
+import { Outlet } from "react-router-dom";
 
-function App() {
+export function App() {
   return (
     <>
-      <Auth></Auth>
+      <Outlet></Outlet>
     </>
   );
 }
-
-export default App;
