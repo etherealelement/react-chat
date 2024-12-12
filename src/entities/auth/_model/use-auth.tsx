@@ -1,9 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { authApi } from "../api/index.ts";
 import { FormFields } from "../_domian/index.ts";
-
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import Cookies from "js-cookie";
 export function useAuth() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const getAuthTokenMutation = useMutation({
     mutationFn: authApi.getAuthToken,
@@ -23,6 +26,22 @@ export function useAuth() {
   const token = getAuthTokenMutation.data;
   const error = getAuthTokenMutation.error;
   const success = getAuthTokenMutation.isSuccess;
+
+  const isTokenValid = (): boolean => {
+    const token = Cookies.get("access_token");
+    if (token) {
+      return true;
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    if (isTokenValid()) {
+      navigate("/profile");
+    } else {
+      navigate("/login");
+    }
+  }, [token, navigate]);
 
   return {
     success,
