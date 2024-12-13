@@ -1,25 +1,42 @@
-import { ChatIcon, SearchIcon, UserProfileIcon } from "@/shared/assets";
+import {
+  ChatIcon,
+  LogoIcon,
+  SearchIcon,
+  UserProfileIcon,
+} from "@/shared/assets";
+import { Link } from "react-router-dom";
 
 export function Sidebar() {
   return (
     <aside className="p-4 border-r border-gray-500 bg-zinc-950 text-white flex flex-col justify-between h-screen">
       {/* Top Section */}
       <div>
-        {/* Links Section */}
         <div className="mb-6">
+          <Link to={"/"}>
+            <LogoIcon></LogoIcon>
+          </Link>
+        </div>
+        {/* Links Section */}
+        <div className="mb-12">
           <ul className="space-y-4">
-            <li className="group flex items-center gap-2 hover:text-gray-300 cursor-pointer">
-              <UserProfileIcon></UserProfileIcon>
-              Моя страница
-            </li>
-            <li className="group flex items-center gap-2 hover:text-gray-300 cursor-pointer">
-              <ChatIcon></ChatIcon>
-              Чаты
-            </li>
-            <li className="group flex items-center gap-2 hover:text-gray-300 cursor-pointer">
-              <SearchIcon></SearchIcon>
-              Поиск
-            </li>
+            <Link to={"/"}>
+              <li className="group flex items-center cursor-pointer gap-3 p-2 rounded-lg hover:bg-zinc-800 transition">
+                <UserProfileIcon></UserProfileIcon>
+                Моя страница
+              </li>
+            </Link>
+            <Link to={"/chats"}>
+              <li className="group flex items-center cursor-pointer gap-3 p-2 rounded-lg hover:bg-zinc-800 transition">
+                <ChatIcon></ChatIcon>
+                Чаты
+              </li>
+            </Link>
+            <Link to={"/search"}>
+              <li className="group flex items-center cursor-pointer gap-3 p-2 rounded-lg hover:bg-zinc-800 transition">
+                <SearchIcon></SearchIcon>
+                Поиск
+              </li>
+            </Link>
           </ul>
         </div>
 
