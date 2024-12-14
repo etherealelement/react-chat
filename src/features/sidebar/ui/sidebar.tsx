@@ -5,8 +5,11 @@ import {
   UserProfileIcon,
 } from "@/shared/assets";
 import { Link } from "react-router-dom";
+import { useSidebar } from "../_model/use-sidebar.tsx";
 
 export function Sidebar() {
+  const { data, isLoading, isError } = useSidebar();
+  console.log(data);
   return (
     <aside className="p-4 border-r border-gray-500 bg-zinc-950 text-white flex flex-col justify-between h-screen">
       {/* Top Section */}

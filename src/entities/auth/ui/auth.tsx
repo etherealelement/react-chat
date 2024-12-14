@@ -27,7 +27,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export function Auth() {
-  const { handleGetAuthToken, isLoadData, error, success } = useAuth();
+  const { error, success, isLoadData, login } = useAuth();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,7 +39,7 @@ export function Auth() {
 
   const onSubmit = (data: FormData) => {
     form.reset();
-    handleGetAuthToken(data);
+    login(data);
   };
 
   return (
