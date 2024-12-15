@@ -1,5 +1,4 @@
 import axios from "axios";
-
 const BASE_URL = "https://icherniakov.ru/yt-course/";
 
 export const $httpClient = axios.create({
@@ -33,6 +32,7 @@ $httpClient.interceptors.response.use(
         return $httpClient.request(originalRequest);
       } catch (e) {
         console.log("NE AUTH");
+        window.location.href = "/login";
         return Promise.reject(e);
       }
     }

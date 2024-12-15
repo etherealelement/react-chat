@@ -24,6 +24,7 @@
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "flowbite-react": "^0.10.2",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
     "ky": "^1.7.2",
