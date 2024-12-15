@@ -1,52 +1,48 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { authApi } from "../api/index.ts";
-import { FormFields } from "../_domian/index.ts";
+import { TokenDto } from "../_domian/index.ts";
+import AuthService from "../api/index.ts";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import Cookies from "js-cookie";
+
 export function useAuth() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const getAuthTokenMutation = useMutation({
-    mutationFn: authApi.getAuthToken,
-    onError: (error) => error,
+  const getAuthMutation = useMutation({
+    mutationFn: (payload: { username: string; password: string }) =>
+      AuthService.login(payload),
+    onError: (error) => {
+      console.error("Ошибка получения токена:", error);
+    },
+    onSuccess: (response) => {
+      const token: TokenDto = response;
+      if (token?.access_token) {
+        // Сохранение токена в localStorage
+        localStorage.setItem("access_token", token.access_token);
+        localStorage.setItem("refresh_token", token.refresh_token);
+        // Навигация на главную страницу
+        navigate("/");
+      }
+    },
     onSettled: async () => {
-      return await queryClient.invalidateQueries({
-        queryKey: [authApi.baseKey],
+      await queryClient.invalidateQueries({
+        queryKey: [AuthService.BASE_KEY],
       });
     },
   });
 
-  const handleGetAuthToken = (payload: Required<FormFields>) => {
-    getAuthTokenMutation.mutate(payload);
+  const login = (payload: { username: string; password: string }) => {
+    getAuthMutation.mutate(payload);
   };
 
-  const isLoadData = getAuthTokenMutation.isPending;
-  const token = getAuthTokenMutation.data;
-  const error = getAuthTokenMutation.error;
-  const success = getAuthTokenMutation.isSuccess;
-
-  const isTokenValid = (): boolean => {
-    const token = Cookies.get("access_token");
-    if (token) {
-      return true;
-    }
-    return false;
-  };
-
-  useEffect(() => {
-    if (isTokenValid()) {
-      navigate("/profile");
-    } else {
-      navigate("/login");
-    }
-  }, [token, navigate]);
+  // Состояния мутации
+  const isLoadData = getAuthMutation.isPending;
+  const error = getAuthMutation.error;
+  const success = getAuthMutation.isSuccess;
 
   return {
-    success,
+    login,
     isLoadData,
-    handleGetAuthToken,
+    success,
     error,
   };
 }
