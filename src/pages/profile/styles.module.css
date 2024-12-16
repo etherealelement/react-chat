@@ -1,0 +1,14 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr 0.7fr; 
+  grid-template-rows: 0.5fr 1.5fr 1fr; 
+  gap: 0px 0px; 
+  grid-template-areas: 
+    "header header header"
+    "Main Main profile-info"
+    "Main Main profile-info"; 
+}
+
+.main { grid-area: Main; }
+.profile_info { grid-area: profile-info; }
+.header { grid-area: header; }
