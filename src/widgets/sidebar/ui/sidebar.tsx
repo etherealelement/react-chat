@@ -9,7 +9,8 @@ import { useAccount } from "@/entities/account";
 import { useState } from "react";
 import { Spinner } from "@/shared/ui/spinner";
 import { SettingsIcon } from "@/shared/assets/icons/settings";
-import { Avatar } from "@/shared/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
+import getAvatarUrl from "@/shared/lib/get-avatar";
 
 export function Sidebar() {
   const { items, isLoading, meProfile } = useAccount();
@@ -72,7 +73,12 @@ export function Sidebar() {
                   key={sub.id}
                   className="flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-800 transition cursor-pointer"
                 >
-                  <Avatar src={sub.avatarUrl}></Avatar>
+                  <Avatar>
+                    <AvatarImage src={getAvatarUrl(sub.avatarUrl)} />
+                    <AvatarFallback>
+                      {sub.username.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
                   <span className="text-sm">{sub.username}</span>
                 </li>
               ))}
@@ -92,7 +98,12 @@ export function Sidebar() {
       {/* Footer Section */}
       <div className=" border-gray-600 pt-4">
         <div className="flex items-center justify-between gap-3 p-2 rounded-lg hover:bg-zinc-800 transition cursor-pointer">
-          <Avatar src={meProfile?.avatarUrl}></Avatar>
+          <Avatar>
+            <AvatarImage src={getAvatarUrl(meProfile?.avatarUrl)} />
+            <AvatarFallback>
+              {meProfile?.username.charAt(0).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
           <span>{meProfile?.username}</span>
           <button>
             <SettingsIcon />

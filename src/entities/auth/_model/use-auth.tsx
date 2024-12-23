@@ -20,7 +20,7 @@ export function useAuth() {
         localStorage.setItem("access_token", token.access_token);
         localStorage.setItem("refresh_token", token.refresh_token);
         // Навигация на главную страницу
-        navigate("/");
+        navigate("/profile");
       }
     },
     onSettled: async () => {
