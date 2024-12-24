@@ -9,7 +9,7 @@ export function ProfileInfo() {
     <div className="grid grid-cols-1 gap-4 bg-transparent">
       {/* Followers Block */}
       <div className="p-4 border rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-2">Followers</h2>
+        <h2 className="text-xl font-semibold mb-2 text-white">Followers</h2>
         <div className="flex items-center space-x-2 mb-2">
           {items?.map((follower) => (
             <Avatar key={follower.id}>
@@ -26,7 +26,7 @@ export function ProfileInfo() {
 
       {/* Skills Block */}
       <div className="p-4 border rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-2">Skills</h2>
+        <h2 className="text-xl font-semibold mb-2 text-white">Skills</h2>
         <ul className="list-disc pl-5 text-gray-600">
           {meProfile?.stack?.length <= 0 ? (
             <span>Навыков нет</span>
@@ -40,7 +40,7 @@ export function ProfileInfo() {
 
       {/* About Me Block */}
       <div className="p-4 border rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-2">About Me</h2>
+        <h2 className="text-xl font-semibold mb-2 text-white">About Me</h2>
         <p className="text-gray-600">
           {meProfile?.description ? meProfile?.description : "Нет описания"}
         </p>
